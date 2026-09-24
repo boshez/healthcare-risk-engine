@@ -1,14 +1,17 @@
+import os
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
 st.set_page_config(page_title="Healthcare AI Risk Engine", layout="wide")
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 
 @st.cache_data
 def load_data():
-    admissions = pd.read_csv("../data/healthcare_admissions.csv")
-    risk = pd.read_csv("../data/patient_risk_scores.csv")
+    admissions = pd.read_csv(os.path.join(BASE_DIR, "..", "data", "healthcare_admissions.csv"))
+    risk = pd.read_csv(os.path.join(BASE_DIR, "..", "data", "patient_risk_scores.csv"))
     return admissions.merge(
         risk[["admission_id", "readmission_risk_score"]], on="admission_id", how="left"
     )
